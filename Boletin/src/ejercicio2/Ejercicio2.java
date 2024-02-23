@@ -10,50 +10,30 @@ public class Ejercicio2 {
 	
 	public static int vehiculosTotales=0;
 	public static int peatonesTotales=0;
-	//public static Semaphore V = new Semaphore(1);
-	//public static Semaphore P = new Semaphore(0);
 	
-	public static boolean NS = true;
-	public static boolean EO = false;
-	public static boolean P = false;
+	public static Semaphore NS = new Semaphore(1);
+	public static Semaphore EO = new Semaphore(0);
+	public static Semaphore P = new Semaphore(0);
 	
     public static void main(String[] args) throws InterruptedException {
-//        Thread cruceV = new HiloV();
-//        Thread cruceP = new HiloP();
-
-//        cruceV.start();
-//        cruceP.start();
+    	CruceP cruceP = new CruceP();
+    	CruceV cruceV = new CruceV();
+    	
+    	Thread cruce = new HiloCruce();
+        Thread CP = new Thread(cruceP);
+        Thread CV = new Thread(cruceV);
         
-        //while(vehiculosTotales<=50 || peatonesTotales<=100){
-        for (int i=0; i<4; i++) {
-        	Thread.sleep(1000);
-        	if (NS) {
-        		System.out.println("Cruzando NS");
-        		NS=false;
-        		EO=true;
-        	}
-        	else if (EO) {
-        		System.out.println("Cruzando EO");
-        		EO=false;
-        		P=true;
-        	}
-        	else {
-        		System.out.println("Cruzando P");
-        		P=false;
-        		NS=true;
-        	}
-        }
+        cruce.start();
+        CP.start();
+        CV.start();
         
-        
-        
-        
-        /*
         try {
-        	cruceV.join();
-        	cruceP.join();
+        	cruce.join();
+        	CP.join();
+        	CV.join();
         }catch (InterruptedException e) {
 			e.printStackTrace();
-		}*/
+		}
         System.out.println("Fin del hilo principal");
     }
 }
