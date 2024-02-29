@@ -11,7 +11,7 @@ public class HiloCruce extends Thread{
 				Ejercicio2.NS.acquire();
 				semaforoNSVerde = true;
 				System.out.println("Semáforo verde para vehículos NS");
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e){}
 			System.out.println("Liberando semáforo vehiculos EO");
 			semaforoNSVerde=false;
@@ -21,7 +21,7 @@ public class HiloCruce extends Thread{
 				Ejercicio2.EO.acquire();
 				semaforoEOVerde = true;
 				System.out.println("Semáforo verde para vehículos EO");
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e){}
 			System.out.println("Liberando semáforo peatones");
 			semaforoEOVerde = false;
@@ -31,7 +31,7 @@ public class HiloCruce extends Thread{
 				Ejercicio2.P.acquire();
 				semaforoPVerde = true;
 				System.out.println("Semáforo verde para peatones");
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e){}
 			System.out.println("Liberando semáforo vehiculos NS");
 			semaforoPVerde = false;

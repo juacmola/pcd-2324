@@ -1,6 +1,5 @@
 package ejercicio2;
 
-import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
 public class Ejercicio2 {
@@ -19,18 +18,23 @@ public class Ejercicio2 {
     	CruceP cruceP = new CruceP();
     	CruceV cruceV = new CruceV();
     	
-    	Thread cruce = new HiloCruce();
-        Thread CP = new Thread(cruceP);
-        Thread CV = new Thread(cruceV);
+    	Thread cruce = new HiloCruce();        
+        Thread[] hilosPeatones = new Thread[15];
+        Thread[] hilosVehiculos = new Thread[8];
         
         cruce.start();
-        CP.start();
-        CV.start();
+               
+        for (int i = 0; i < 15; i++) {
+        	hilosVehiculos[i] = new Thread(cruceV);
+            hilosVehiculos[i].start();
+            hilosPeatones[i] = new Thread(cruceP);
+            hilosPeatones[i].start();
+        }
         
         try {
         	cruce.join();
-        	CP.join();
-        	CV.join();
+        	for (Thread hiloPeaton : hilosPeatones) { hiloPeaton.join(); }
+            for (Thread hiloVehiculo : hilosVehiculos) { hiloVehiculo.join(); }
         }catch (InterruptedException e) {
 			e.printStackTrace();
 		}

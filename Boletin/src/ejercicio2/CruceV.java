@@ -7,7 +7,7 @@ public class CruceV implements Runnable{
 	
 	public void run() {
 		temp = Ejercicio2.vehiculosTotales;
-		while(temp<2) {
+		while(temp<50) {
 			tempNS = Ejercicio2.vehiculosCruzandoNS;
 			if (HiloCruce.esNSVerde() && tempNS<4) {
 				tempNS++;
