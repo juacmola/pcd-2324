@@ -2,17 +2,18 @@ package ejercicio2;
 
 import java.util.concurrent.Semaphore;
 
-public class Ejercicio2 {
-	public static int vehiculosCruzandoNS = 0;
-	public static int vehiculosCruzandoEO = 0;
-	public static int peatonCruzando = 0;
+public class Main {
+	public static int vehiculosCruzando = 0;		// nl
+	public static int peatonCruzando = 0;			// nl
 	
-	public static int vehiculosTotales=0;
-	public static int peatonesTotales=0;
+	public static int vehiculosEsperandoNS=0;			// nle
+	public static int vehiculosEsperandoEO=0;			// nle
+	public static int peatonesEsperando=0;			// nle
 	
-	public static Semaphore NS = new Semaphore(1);
-	public static Semaphore EO = new Semaphore(0);
-	public static Semaphore P = new Semaphore(0);
+	public static Semaphore SemaforoNS = new Semaphore(0);
+	public static Semaphore SemaforoEO = new Semaphore(0);
+	public static Semaphore SemaforoPeaton = new Semaphore(0);
+	public static Semaphore mutex = new Semaphore(1);
 	
     public static void main(String[] args) throws InterruptedException {
     	CruceP cruceP = new CruceP();
@@ -23,10 +24,13 @@ public class Ejercicio2 {
         Thread[] hilosVehiculos = new Thread[8];
         
         cruce.start();
-               
-        for (int i = 0; i < 15; i++) {
+              
+        for(int i=0; i < 8; i++) {
         	hilosVehiculos[i] = new Thread(cruceV);
             hilosVehiculos[i].start();
+        }
+        
+        for (int i = 0; i < 15; i++) {
             hilosPeatones[i] = new Thread(cruceP);
             hilosPeatones[i].start();
         }
