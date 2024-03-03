@@ -1,0 +1,201 @@
+***COMPONENTES DEL GRUPO***
+Joaquín Gálvez Díaz (Portavoz)
+Jorge Urbelz Alonso-Cortés
+
+
+***HILO CRUCE***
+
+Procedimiento run()
+begin
+	for i in 0..5 hacer
+		Imprimir("Semáforo verde para vehículos Norte-Sur\n");
+		signal(Main.SemaforoNS);
+		sleep(5000);
+		
+		Imprimir("Semáforo verde para vehículos Este-Oeste\n");
+		signal(Main.SemaforoEO);
+		sleep(5000);
+		
+		Imprimir("Semáforo verde para peatones\n");
+		signal(Main.SemaforoPeaton);
+		sleep(5000);
+	fin_for
+end
+
+
+***HILO CRUCE_PEATON***
+
+Procedimiento run()
+begin
+	mientras true hacer
+		wait(mutex);
+		si Main.vehiculoCruzando > 0 o Main.peatonCruzando>=10 hacer
+			Main.peatonesEsperando++;
+			signal(mutex);
+			wait(Main.SemaforoPeaton);
+			Main.peatonesEsperando--;
+		fin_si
+		
+		Main.peatonCruzando++;
+		
+		si Main.peatonesEsperando > 0 hacer
+			signal(Main.SemaforoPeaton);
+		sino signal(mutex);
+		fin_si
+		
+		wait(mutex);
+		Imprimir("Peatón cruzando\n");
+		sleep(3000);
+		Main.peatonCruzando--;
+		
+		si Main.peatonCruzando = 0 y Main.vehículosEsperandoNS > 0 hacer
+			signal(SemaforoNS);
+		sino signal(mutex);
+		fin_si
+		
+		sleep(8000);
+	fin_mientras
+end
+
+
+***HILO CRUCEVEHICULO***
+
+Procedimiento run()
+begin
+	mientras true hacer
+		wait(mutex);
+		si Main.peatonCruzando>0 o Main.vehiculoCruzando>=4 hacer
+			Main.vehiculosEsperandoNS++;
+			signal(mutex);
+			wait(Main.SemaforoNS);
+			Main.vehiculosEsperandoNS--;
+		fin_si
+		
+		Main.vehiculosCruzando++;
+		
+		si Main.vehiculosEsperandoNS > 0 hacer
+			signal(Main.SemaforoNS);
+		sino signal(mutex);
+		fin_si
+		
+		wait(mutex);
+		Imprimir("Vehículo cruzando direccíon Norte-Sur\n");
+		sleep(500);
+		Main.vehiculosCruzando--;
+		
+		si Main.vehiculoCruzando = 0 y Main.vehiculosEsperandoEO > 0 hacer
+			signal(SemaforoEO);
+		sino signal(mutex);
+		fin_si
+		
+		sleep(7000);
+		
+		
+		wait(mutex);
+		si Main.peatonCruzando>0 o Main.vehiculoCruzando>=4 hacer
+			Main.vehiculosEsperandoEO++;
+			signal(mutex);
+			wait(Main.SemaforoNS);
+			Main.vehiculosEsperandoEO--;
+		fin_si
+		
+		Main.vehiculosCruzando++;
+		
+		si Main.vehiculosEsperandoEO > 0 hacer
+			signal(Main.SemaforoEO);
+		sino signal(mutex);
+		fin_si
+		
+		wait(mutex);
+		Imprimir("Vehículo cruzando dirección Este-Oeste\n");
+		sleep(500);
+		Main.vehiculosCruzando--;
+		
+		si Main.vehiculoCruzando = 0 y Main.peatonesEsperando > 0 hacer
+			signal(SemaforoPeaton);
+		sino signal(mutex);
+		fin_si
+		
+		sleep(7000);
+	fin_mientras
+end
+
+
+***Main***
+vehiculosCruzando: entero;
+peatonCruzando: entero;
+vehiculosEsperandoNS: entero;
+vehiculosEsperandoEO: entero;
+peatonesEsperando: entero;
+
+vehiculosCruzando <- 0;
+peatonCruzando <- 0;
+vehiculosEsperandoNS <- 0;
+vehiculosEsperandoEO <- 0;
+peatonesEsperando <- 0;
+
+SemaforoNS: Semáforo;
+SemaforoEO: Semáforo;
+SemaforoPeaton: Semáforo;
+mutex: Semáforo;
+
+initial(SemaforoNS, 0);
+initial(SemaforoEO, 0);
+initial(SemaforoPeaton, 0);
+initial(mutex, 1);
+
+Procedimiento main()
+begin
+	cruce: HiloCruce;
+	cruceVehiculo: HiloCruceVehiculo;
+	crucePeaton: HiloCrucePeaton;
+	
+	hilosVehiculos: Array de hilos;
+	hilosPeatones: Array de hilos;
+	
+	cruce.iniciar();
+	
+	for i in 0..50 hacer
+		hilosVehiculos[i] <- Creacion Hilo(cruceVehiculo);
+		hilosVehiculos[i].iniciar();
+	fin_for
+	
+	for i in 0..100 hacer
+		hilosPeatones[i] <- Creacion Hilo(crucePeaton);
+		hilosPeatones[i].iniciar();
+	fin_for
+	
+	intentar
+		cruce.unir();
+		
+		for valor:hilo in hilosVehiculos hacer
+			hilo.unir();
+		fin_for
+		
+		for valor:hilo in hilosPeatones hacer
+			hilo.unir();
+		fin_for
+		
+	fin_intentar
+	atrapar(e: ExcepcionInterrumpida)
+		e.imprimirTrazaPila();
+	fin_atrapar
+
+	Imprimir("Fin del hilo principal\n");
+end
+
+
+***RECURSOS NO COMPARTIBLES Y CONDICIONES DE SINCRONIZACIÓN***
+vehiculosCruzando, peatonCruzando, vehiculosEsperandoEO, peatonesEsperando son recursos no compartibles, 
+ya que al ser variables enteras que cambian de valor, debemos asegurarnos que nadie más usa la variable 
+mientras un hilo lo esté haciendo.
+
+Además, la pantalla es otro recurso no compartible, no puede haber más de un proceso usándola a la vez.
+
+En las condiciones de sincronización:
+	- Debemos asegurarnos que los vehículos y los peatones antes de cruzar tengan su semáforo en verde.
+	- Debemos asegurarnos que si van a cruzar no haya: 	- en el caso de peatones, vehiculos cruzando.
+														- en el caso de vehiculos, peatones cruzando ni 
+																vehiculo cruzando en la otra dirección.
+	- Debemos asegurarnos que el número de entidades cruzando no supere:	- 10 en el caso de peatones.
+																			- 4 en el caso de vehículos.
