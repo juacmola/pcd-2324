@@ -1,68 +1,76 @@
 package ejercicio3;
 
-import java.util.LinkedList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MonitorMaquina {
-	private final static int N_MAQUINAS = 3;
 	private ReentrantLock l = new ReentrantLock(true);
 	private Condition colaMaquina = l.newCondition();
-	//private int maquinas[] = new int[3];
-	private LinkedList<Integer> maquinas = new LinkedList<>();
-	private MonitorMesa monitorMesa = new MonitorMesa();
+	private int maquinas[] = new int[3];
 	
 	public MonitorMaquina() {
-		//for (int i = 0; i < maquinas.length; i++) {
-			//maquinas[i] = -1;
-		//}
-		
-		for (int i = 0; i < 3; i++) {
-			maquinas.add(-1);
+		for (int i = 0; i < maquinas.length; i++) {
+			maquinas[i] = -1;
 		}
 	}
 	
-	private int codigoMaquina(int id) {
-		int codigo = -2;
-		
-		if (maquinas.contains(id)) {
-			codigo = maquinas.indexOf(id);
+	private int indexOf(int n) {
+		int index = -1;
+		for (int i = 0; i < maquinas.length; i++) {
+			if (maquinas[i] == n) {
+				index = i;
+				return index;
+			}
 		}
 		
-		else if (maquinas.contains(-1)) {
-			codigo = maquinas.indexOf(-1);
-		}
-		
-		return codigo;
+		return index;
 	}
 	
-	public void solicitarMaquina(int id, int tiempoMaquina, int tiempoMesa) throws InterruptedException {
+	public int solicitarMaquina(int id, int tiempoMaquina, int tiempoMesa, MonitorMesa monitorMesa) throws InterruptedException {
 		l.lock();
+		int mesaAsignada = -1;
+		int numeroMesa, numeroMaquina, maquina;
 		try {
-			int codigo = codigoMaquina(id);
-			if (codigo >= 0) {
-				System.out.println("Cliente " + id + " ha solicitado su servicio en la máquina: " + codigo);
+			maquina = indexOf(id);
+			if (maquina >= 0) {
+				mesaAsignada = monitorMesa.mesaMenorTiempoEspera();
+				numeroMaquina = maquina + 1;
+				System.out.println("Cliente " + id + " ha solicitado su servicio en la máquina: " + numeroMaquina);
 				System.out.println("Tiempo en solicitar el servicio: " + tiempoMaquina);
-				//DONE: Añadir en el print la mesa que menos tiempo de cola tenga
-				System.out.println("Será atendido en la mesa: " + monitorMesa.mesaMenorTiempoEspera());
+				numeroMesa = mesaAsignada + 1;
+				System.out.println("Será atendido en la mesa: " + numeroMesa);
 				System.out.println("Tiempo en la mesa: " + tiempoMesa);
-				//DONE: Añadir tiempos de las mesas antes de entrar en una de ellas
-				System.out.println("Tiempo de espera en la mesa1 = " + monitorMesa.getTiempoMesa(). + ", mesa2 = " + + ", mesa3 = " + + ", mesa4 = ");
-				//TODO: Finalizar tratamiento
+				numeroMesa = 1;
+				System.out.printf("Tiempo de espera en la mesa" + numeroMesa + " = " + monitorMesa.getTiempoColaMesa()[0]);
+				numeroMesa++;
+				for (int i = 1; i < monitorMesa.getTiempoColaMesa().length; i++) {
+					System.out.printf(", mesa" + numeroMesa + " = " + monitorMesa.getTiempoColaMesa()[i]);
+					numeroMesa++;
+				}
+				System.out.println("\n");
+				monitorMesa.introducirClienteColaMesa(mesaAsignada, tiempoMesa);
+				maquinas[maquina] = -1;
+				colaMaquina.signal();
 			}
 			
 			else {
-				while(codigoMaquina(id) == -2) {
+				while(indexOf(-1) == -1) {
 					colaMaquina.await();
 				}
 				
-				maquinas.add(codigo, id);
-				colaMaquina.signalAll();
+				//Codigo para facilitar la depuracion
+				numeroMaquina = indexOf(-1) + 1;
+				System.out.println("Cliente " + id + " ha adquirido la máquina: " + numeroMaquina);
+				System.out.println();
+				
+				maquinas[indexOf(-1)] = id;
 			}
 			
 		} finally {
 			l.unlock();
 		}
+		
+		return mesaAsignada;
 	}
 	
 }
