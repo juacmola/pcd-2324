@@ -6,14 +6,17 @@ public class Main {
 	public static int vehiculosCruzando = 0;		// nl
 	public static int peatonCruzando = 0;			// nl
 	
-	public static int vehiculosEsperandoNS=0;			// nle
-	public static int vehiculosEsperandoEO=0;			// nle
+	public static int vehiculosEsperandoNS=0;		// nle
+	public static int vehiculosEsperandoEO=0;		// nle
 	public static int peatonesEsperando=0;			// nle
+	
+	public static int turno;						// 1 = NS, 2 = EO, 3 = P
 	
 	public static Semaphore SemaforoNS = new Semaphore(0);
 	public static Semaphore SemaforoEO = new Semaphore(0);
 	public static Semaphore SemaforoPeaton = new Semaphore(0);
 	public static Semaphore mutex = new Semaphore(1);
+	public static Semaphore pantalla = new Semaphore(1);
 	
     public static void main(String[] args) throws InterruptedException {
     	CruceP cruceP = new CruceP();
