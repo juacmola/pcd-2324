@@ -1,0 +1,191 @@
+***COMPONENTES DEL GRUPO***
+Joaquín Gálvez Díaz (Portavoz)
+Jorge Urbelz Alonso-Cortés
+
+***HILO CONTROLADOR***
+buzonPregunta: Mailbox;
+buzonCajaA: Mailbox;
+buzonCajaB: Mailbox;
+buzonAbandonoCaja: Mailbox;
+arrayBuzonComunicacion: CommunicationScheme[];
+impresora: CommunicationScheme;
+
+tiempo: entero;
+devuelveAsignacion: String;
+idPreguntaCaja: entero;
+idCajaA: entero;
+idCajaB: entero;
+idAbandono: entero;
+
+cajaAOcupada: booleano;
+cajaBOcupada: booleano;
+activaImpresora: entero estatico;
+
+Constructor HiloControlador(pregunta: Mailbox, cajaA: Mailbox, cajaB: Mailbox, abandono: Mailbox, 
+							array CommunicationScheme[], impresora: CommunicationScheme)
+begin
+	buzonPregunta <- pregunta;
+	buzonCajaA <- cajaA;
+	buzonCajaB <- cajaB;
+	buzonAbandonoCaja <- abandono;
+	arrayBuzonComunicacion <- array;
+	impresora <- impresora;
+	
+	cajaAOcupada <- false;
+	cajaBOcupada <- false;
+end
+
+Procedimiento run()
+begin
+	
+	send(impresora, activaImpresora);
+
+	mientras true hacer
+		select entre
+			idPreguntaCaja <- receive(buzonPregunta);
+			tiempo <- Random[1,10];
+			si tiempo >= 5 hacer
+				devuelveAsignacion <- tiempo.convertiraString() + ",A";
+			sino devuelveAsignacion <- tiempo.convertiraString() + ",B";
+			fin_si
+			send(arrayBuzonComunicacion[idPreguntaCaja], devuelveAsignacion);
+		or
+			when !cajaAOcupada =>
+			idCajaA <- receive(buzonCajaA);
+			cajaAOcupada <- true;
+			send(arrayBuzonComunicacion[idCajaA], "ok");
+		or
+			when !cajaBOcupada =>
+			idCajaB <- receive(buzonCajaB);
+			cajaBOcupada <- true;
+			send(arrayBuzonComunicacion[idCajaB], "ok");
+		or
+			idAbandono <- receive(buzonAbandonoCaja);
+			si idCajaA == idAbandono hacer
+				cajaAOcupada <- false;
+			sino cajaBOcupada <- false;
+			fin_si
+			send(arrayBuzonComunicacion[idAbandono], "ok");
+		fin_select
+	fin_mientras
+end
+
+***HILO COMPRADOR***
+buzonPregunta: CommunicationScheme;
+buzonCajaA: CommunicationScheme;
+buzonCajaB: CommunicationScheme;
+buzonAbandonoCaja: CommunicationScheme;
+arrayBuzonComunicacion: CommunicationScheme[];
+impresora: CommunicationScheme;
+
+id: entero;
+tiempo: String;
+caja: String;
+mensajeAsignacion: String;
+mensajeImprimir: entero;
+
+Constructor HiloComprador(id: entero, pregunta: CommunicationScheme, cajaA: CommunicationScheme, 
+							cajaB: CommunicationScheme, abandono: CommunicationScheme, 
+							array CommunicationScheme[], impresora: CommunicationScheme)
+begin
+	id <- id;
+	buzonPregunta <- pregunta;
+	buzonCajaA <- cajaA;
+	buzonCajaB <- cajaB;
+	buzonAbandonoCaja <- abandono;
+	arrayBuzonComunicacion <- array;
+	impresora <- impresora;
+end
+
+Procedimiento run()
+begin
+	for i in 0..5 hacer
+		// PASO 1: REALIZA LA COMPRA
+		sleep(Random()*1000);
+		
+		
+		// PASO 2: SOLICITAR CAJA
+		// PRIMERO PREGUNTA POR LA CAJA QUE ESTÉ LIBRE
+		send(buzonPregunta, id);
+		mensajeAsignacion <- receive(arrayBuzonComunicacion[id]);
+		partes: String[];
+		partes <- split(mensajeAsignacion, ",");
+		tiempo <- partes[0];
+		caja <- partes[1];
+		
+		// LUEGO SOLICITA ENTRAR EN ESA CAJA
+		si caja == "A" hacer
+			send(buzonCajaA, id);
+		sino send(buzonCajaB, id);
+		fin_si
+		receive(arrayBuzonComunicacion[id]);
+		
+		
+		// PASO 3: PAGAR EN CAJA
+		sleep(tiempo.convertiraInt()*1000);
+		
+		
+		// PASO 4: LIBERAR CAJA
+		send(buzonAbandonoCaja, id);
+		receive(arrayBuzonComunicacion[id]);
+		
+		
+		// PASO 5: IMPRIMIR POR PANTALLA
+		mensajeImprimir <- receive(impresora);
+		Imprimir("Persona " + (id+1) + " ha usado la caja " + caja + "\n");
+		Imprimir("Tiempo de pago=" + tiempo + "\n");
+		Imprimir("Thread.sleep(" + tiempo + ")\n");
+		Imprimir("Persona " + (id+1) + " liberando la caja " + caja + "\n");
+		send(impresora, mensajeImprimir);
+	fin_for
+end
+
+***MAIN***
+preguntaComprador: Mailbox;
+cajaA: Mailbox;
+cajaB: Mailbox;
+abandonoCaja: Mailbox;
+impresora: Mailbox;
+
+arrayBuzon: arrayList de Mailbox;
+compradores: arrayList de HiloComprador;
+
+controlador: HiloControlador;
+
+Procedimiento main()
+begin
+	PreguntaComprador <- Creacion Mailbox;
+	cajaA <- Creacion Mailbox;
+	cajaB <- Creacion Mailbox;
+	AbandonoCaja <- Creacion Mailbox;
+	Impresora <- Creacion Mailbox;
+	
+	arrayBuzon <- Creacion Mailbox[30];
+	for i in 0..30 hacer
+		arrayBuzon[i] <- Creacion Mailbox;
+	fin_for
+	
+	controlador <- Creacion HiloControlador(preguntaComprador, cajaA, cajaB, abandonoCaja, arrayBuzon, impresora);
+	controlador.iniciar();
+	
+	compradores <- Creacion HiloComprador[30];
+	for i in 0..30 hacer
+		compradores[i] <- Creacion HiloComprador(i, preguntaComprador, cajaA, cajaB, abandonoCaja, arrayBuzon, impresora);
+		compradores[i].iniciar();
+	fin_for
+end
+
+
+***RECURSOS NO COMPARTIBLES Y CONDICIONES DE SINCRONIZACIÓN***
+idCajaA, idCajaB, cajaAOcupada, cajaBOcupada son recursos no compartibles, 
+ya que al ser variables enteras que cambian de valor, debemos asegurarnos que nadie más usa la variable 
+mientras un hilo lo esté haciendo.
+
+Además, la pantalla es otro recurso no compartible, no puede haber más de un proceso usándola a la vez.
+
+En las condiciones de sincronización:
+	- Debemos asegurarnos que si un comprador solicita acceso a una caja, esta caja esté vacía.
+	- Debemos asegurarnos que solo haya un comprador imprimiendo cada vez.
+	- Cada vez que un comprador envía un send, debe ser devuelto un receive, a excepción de la impresora,
+		donde un comprador espera a recibir primero un receive (el cual indica que puede imprimir), para
+		posteriormente enviar un send diciendo que ha acabado de imprimir.
