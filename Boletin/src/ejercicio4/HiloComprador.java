@@ -1,23 +1,24 @@
 package ejercicio4;
 
-import messagepassing.CommunicationScheme;
+import messagepassing.MailBox;
 
 public class HiloComprador extends Thread{
-	private CommunicationScheme buzonPregunta;
-	private CommunicationScheme buzonCajaA;
-	private CommunicationScheme buzonCajaB;
-	private CommunicationScheme buzonAbandonoCaja;
-	private CommunicationScheme[] arrayBuzonComunicacion;
-	private CommunicationScheme imprimir;
+	private MailBox buzonPregunta;
+	private MailBox buzonCajaA;
+	private MailBox buzonCajaB;
+	private MailBox buzonAbandonoCaja;
+	private MailBox[] arrayBuzonComunicacion;
+	private MailBox imprimir;
 	
 	private int id;
 	private String tiempo;
 	private String caja;
 	private String mensajeAsignacion;
 	private String mensajeConfirmacion;
-	private String mensajeImprimir;
+	private int mensajeImprimir;
 
-	public HiloComprador(int id, CommunicationScheme pregunta, CommunicationScheme cajaA, CommunicationScheme cajaB, CommunicationScheme abandono, CommunicationScheme[] array, CommunicationScheme imprimir) {
+	public HiloComprador(int id, MailBox pregunta, MailBox cajaA, MailBox cajaB,
+												MailBox abandono, MailBox[] array, MailBox imprimir) {
 		this.id=id;
 		this.buzonPregunta=pregunta;
 		this.buzonCajaA=cajaA;
@@ -68,12 +69,12 @@ public class HiloComprador extends Thread{
 
 			
 			// PASO 5: IMPRIMIR POR PANTALLA
-			int buzon = (int) imprimir.receive();
+			mensajeImprimir = (int) imprimir.receive();
 			System.out.println("Persona " + (id+1) + " ha usado la caja " + caja);
 			System.out.println("Tiempo de pago=" + tiempo);
 			System.out.println("Thread.sleep(" + tiempo + ")");
 			System.out.println("Persona " + (id+1) + " liberando la caja " + caja);
-			imprimir.send(buzon);
+			imprimir.send(mensajeImprimir);
 		}
 	}
 }
