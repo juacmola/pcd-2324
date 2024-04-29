@@ -1,5 +1,14 @@
 package ejercicio2;
 
+/**CruceV se encarga de toda la parafernalia de los vehículos. Cada uno
+ * de los hilos de los vehículos recorrerá este código. Al principio se
+ * encuentra la condición de entrada. Si el vehículo no la cumple, es que
+ * es su turno y puede empezar a cruzar. En cambio, si la cumple, debe
+ * aguardar a que sea su turno. En este código tratamos la posibilidad,
+ * tanto de que el vehículo esté cruzando en la dirección Norte-Sur, como
+ * la Este-Oeste (la comenzará a recorrer una vez cruzado en la otra
+ * dirección).
+ */
 public class CruceV implements Runnable{
 	public void run() {
 		while(true) {

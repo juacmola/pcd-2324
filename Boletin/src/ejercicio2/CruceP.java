@@ -1,5 +1,11 @@
 package ejercicio2;
 
+/**CruceP se encarga de toda la parafernalia de los peatones. Cada uno
+ * de los hilos de los peatones recorrerá este código. Al principio se
+ * encuentra la condición de entrada. Si el peatón no la cumple, es que
+ * es su turno y puede empezar a cruzar. En cambio, si la cumple, debe
+ * aguardar a que sea su turno.
+ */
 public class CruceP implements Runnable{
 	public void run() {
 		while(true) {

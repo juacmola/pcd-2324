@@ -2,6 +2,9 @@ package ejercicio2;
 
 import java.util.concurrent.Semaphore;
 
+/**La clase principal del programa. Se encargará de inicializar todas
+ * las variables y semáforos.
+ */
 public class Main {
 	public static int vehiculosCruzandoNS = 0;
 	public static int vehiculosCruzandoEO = 0;
@@ -19,6 +22,12 @@ public class Main {
 	public static Semaphore mutex = new Semaphore(1);
 	public static Semaphore pantalla = new Semaphore(1);
 
+	/**El método main genera todos los hilos que vamos a usar durante la
+	 * práctica. En total, generaremos un hilo para el cruce de semáforo,
+	 * 50 hilos para los vehículos y 100 para los peatones.
+	 * @param args
+	 * @throws InterruptedException
+	 */
 	public static void main(String[] args) throws InterruptedException {
 		CruceP cruceP = new CruceP();
 		CruceV cruceV = new CruceV();
