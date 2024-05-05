@@ -3,74 +3,90 @@ package ejercicio3;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Esta clase representa la funcionalidad que gestiona el acceso a las 3 máquinas disponibles.
+ * Cuenta con 2 métodos principales para solicitar y liberar una máquina.
+ * 
+ * @author galve
+ *
+ */
 public class MonitorMaquina {
+	private static final int N_MAQUINAS = 3;
+	
 	private ReentrantLock l = new ReentrantLock(true);
 	private Condition colaMaquina = l.newCondition();
-	private int maquinas[] = new int[3];
+	private int maquinas[] = new int[N_MAQUINAS];
 	
+	/**
+	 * El constructor inicializa a -1 el array que registra que clientes están ocupando las máquinas.
+	 */
 	public MonitorMaquina() {
-		for (int i = 0; i < maquinas.length; i++) {
+		for (int i = 0; i < N_MAQUINAS; i++) {
 			maquinas[i] = -1;
 		}
 	}
 	
-	private int indexOf(int n) {
-		int index = -1;
-		for (int i = 0; i < maquinas.length; i++) {
+	/**
+	 * Este método devuelve la primera máquina que está disponible (0, 1 o 2) o -1 si todas las máquinas
+	 * están ocupadas.
+	 * 
+	 * @param n		entero.
+	 * @return maquinaAsignada		entero.
+	 */
+	private int getMaquinaDisponible(int n) {
+		int maquinaAsignada = -1;
+		
+		for (int i = 0; i < N_MAQUINAS; i++) {
 			if (maquinas[i] == n) {
-				index = i;
-				return index;
+				maquinaAsignada = i;
+				return maquinaAsignada;
 			}
 		}
 		
-		return index;
+		return maquinaAsignada;
 	}
 	
-	public int solicitarMaquina(int id, int tiempoMaquina, int tiempoMesa, MonitorMesa monitorMesa) throws InterruptedException {
+	/**
+	 * Método para solicitar el acceso a una máquina.
+	 * 
+	 * @param id	identificador del cliente.
+	 * @return maquinaAsignada		entero que representa la máquina que ha sido asginada al cliente.
+	 * @throws InterruptedException .
+	 */
+	public int solicitarMaquina(int id) throws InterruptedException {
 		l.lock();
-		int mesaAsignada = -1;
-		int numeroMesa, numeroMaquina, maquina;
+		int maquinaAsignada;
+		
 		try {
-			maquina = indexOf(id);
-			if (maquina >= 0) {
-				mesaAsignada = monitorMesa.mesaMenorTiempoEspera();
-				numeroMaquina = maquina + 1;
-				System.out.println("Cliente " + id + " ha solicitado su servicio en la máquina: " + numeroMaquina);
-				System.out.println("Tiempo en solicitar el servicio: " + tiempoMaquina);
-				numeroMesa = mesaAsignada + 1;
-				System.out.println("Será atendido en la mesa: " + numeroMesa);
-				System.out.println("Tiempo en la mesa: " + tiempoMesa);
-				numeroMesa = 1;
-				System.out.printf("Tiempo de espera en la mesa" + numeroMesa + " = " + monitorMesa.getTiempoColaMesa()[0]);
-				numeroMesa++;
-				for (int i = 1; i < monitorMesa.getTiempoColaMesa().length; i++) {
-					System.out.printf(", mesa" + numeroMesa + " = " + monitorMesa.getTiempoColaMesa()[i]);
-					numeroMesa++;
-				}
-				System.out.println("\n");
-				monitorMesa.introducirClienteColaMesa(mesaAsignada, tiempoMesa);
-				maquinas[maquina] = -1;
-				colaMaquina.signal();
+			while(getMaquinaDisponible(-1) == -1) {
+				colaMaquina.await();
 			}
 			
-			else {
-				while(indexOf(-1) == -1) {
-					colaMaquina.await();
-				}
-				
-				//Codigo para facilitar la depuracion
-				numeroMaquina = indexOf(-1) + 1;
-				System.out.println("Cliente " + id + " ha adquirido la máquina: " + numeroMaquina);
-				System.out.println();
-				
-				maquinas[indexOf(-1)] = id;
-			}
+			maquinaAsignada = getMaquinaDisponible(-1);
+			maquinas[maquinaAsignada] = id;
 			
 		} finally {
 			l.unlock();
 		}
 		
-		return mesaAsignada;
+		return maquinaAsignada;
 	}
 	
+	/**
+	 * Método mediante el cuál un cliente abandona una máquina.
+	 * En caso de que haya algún cliente durmiendo porque esté a la espera de solicitar una máquina se le
+	 * despertará.
+	 * 
+	 * @param maquinaAsignada	entero que representa la máquina que ha sido asginada al cliente.
+	 */
+	public void liberarMaquina(int maquinaAsignada) {
+		l.lock();
+		try {
+			maquinas[maquinaAsignada] = -1;
+			colaMaquina.signal();
+			
+		} finally {
+			l.unlock();
+		}
+	}
 }
