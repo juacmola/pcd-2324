@@ -1,37 +1,45 @@
 package ejercicio1;
 
-import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * La clase principal del programa. En ella se declaran todas las variables necesarias para la correcta
+ * ejecución del programa.
+ * @author galve
+ *
+ */
 public class Ejercicio1 {
+	public static final int N_VALORES = 110;
+	public static final int N_CONSUMIDORES = 10;
 	
+	public static ReentrantLock l = new ReentrantLock();
+	
+	/**
+	 * Método principal del programa donde se realiza la ejecución de los distintos procesos que lo
+	 * componen. El cuál sigue el siguiente orden: Primero se ejecuta el proceso generador, tras su
+	 * finalización se ejecutan los procesos consumidores en concurrencia y por último, se ejecuta
+	 * el proceso sumador.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		ArrayList<Integer> arrayValoresCompartido = new ArrayList<>(110);
-		int[] arrayResultadosCompartido = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-			
+		int arrayValoresCompartido[] = new int[N_VALORES];
+		int arrayResultadosCompartido[] = new int[N_CONSUMIDORES];
+		HiloConsumidor consumidores[] = new HiloConsumidor[N_CONSUMIDORES];
+		Thread tConsumidores[] = new Thread[N_CONSUMIDORES];
+		
 		HiloGenerador g = new HiloGenerador(arrayValoresCompartido);
-		HiloConsumidor c0 = new HiloConsumidor(0, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c1 = new HiloConsumidor(1, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c2 = new HiloConsumidor(2, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c3 = new HiloConsumidor(3, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c4 = new HiloConsumidor(4, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c5 = new HiloConsumidor(5, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c6 = new HiloConsumidor(6, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c7 = new HiloConsumidor(7, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c8 = new HiloConsumidor(8, arrayValoresCompartido, arrayResultadosCompartido);
-		HiloConsumidor c9 = new HiloConsumidor(9, arrayValoresCompartido, arrayResultadosCompartido);
+		
+		for (int i = 0; i < N_CONSUMIDORES; i++)
+			consumidores[i] = new HiloConsumidor(i, arrayValoresCompartido, arrayResultadosCompartido);
+		
 		HiloSumador s = new HiloSumador(arrayResultadosCompartido);
 			
 		Thread tg = new Thread(g);
-		Thread tc0 = new Thread(c0);
-		Thread tc1 = new Thread(c1);
-		Thread tc2 = new Thread(c2);
-		Thread tc3 = new Thread(c3);
-		Thread tc4 = new Thread(c4);
-		Thread tc5 = new Thread(c5);
-		Thread tc6 = new Thread(c6);
-		Thread tc7 = new Thread(c7);
-		Thread tc8 = new Thread(c8);
-		Thread tc9 = new Thread(c9);
+		
+		for (int i = 0; i < N_CONSUMIDORES; i++)
+			tConsumidores[i] = new Thread(consumidores[i]);
+		
 		Thread ts = new Thread(s);
 			
 		tg.start();
@@ -42,29 +50,13 @@ public class Ejercicio1 {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-			
-		tc0.start();
-		tc1.start();
-		tc2.start();
-		tc3.start();
-		tc4.start();
-		tc5.start();
-		tc6.start();
-		tc7.start();
-		tc8.start();
-		tc9.start();
+		
+		for (int i = 0; i < N_CONSUMIDORES; i++)
+			tConsumidores[i].start();
 			
 		try {
-			tc0.join();
-			tc1.join();
-			tc2.join();
-			tc3.join();
-			tc4.join();
-			tc5.join();
-			tc6.join();
-			tc7.join();
-			tc8.join();
-			tc9.join();
+			for (int i = 0; i < N_CONSUMIDORES; i++)
+				tConsumidores[i].join();
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -73,4 +65,4 @@ public class Ejercicio1 {
 		ts.start();
 				
 		}
-	}
+}
