@@ -6,8 +6,8 @@ package ejercicio1;
  * calcula el resultado de las operaciones, lo almacena en otro array de enteros llamado
  * "arrayResultadosCompartido" e imprime por pantalla su id junto al resultado obtenido. 
  * 
- * @author galve
- *
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class HiloConsumidor implements Runnable{
 	private int id;

@@ -8,8 +8,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * cada una con una cola propia.
  * Cuenta con 2 métodos principales para solicitar y liberar una mesa.
  * 
- * @author galve
- *
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class MonitorMesa {
 	private static final int N_MESAS = 4;

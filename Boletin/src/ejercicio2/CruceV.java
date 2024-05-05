@@ -8,6 +8,9 @@ package ejercicio2;
  * tanto de que el vehículo esté cruzando en la dirección Norte-Sur, como
  * la Este-Oeste (la comenzará a recorrer una vez cruzado en la otra
  * dirección).
+ * 
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class CruceV implements Runnable{
 	public void run() {

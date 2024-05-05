@@ -7,8 +7,8 @@ import java.util.Random;
  * y una operación (codificada con un entero, suma = 1, resta = 2 y multiplicación = 3) alternativamente
  * en un array de enteros de 110 posiciones, "arrayValoresCompartido".
  * 
- * @author galve
- *
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class HiloGenerador implements Runnable {
 	private volatile int arrayValoresCompartido[];

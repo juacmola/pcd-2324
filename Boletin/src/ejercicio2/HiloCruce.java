@@ -5,6 +5,9 @@ package ejercicio2;
  * turno = 1, es el momento de cruce de los vehículos provenientes del
  * Norte. Cuando turno = 2, le toca a los que vengan del Este. Por
  * último, los peatones cruzarán cuando turno = 3.
+ * 
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class HiloCruce extends Thread{	
 	public void run() {

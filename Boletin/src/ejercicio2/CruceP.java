@@ -5,6 +5,9 @@ package ejercicio2;
  * encuentra la condición de entrada. Si el peatón no la cumple, es que
  * es su turno y puede empezar a cruzar. En cambio, si la cumple, debe
  * aguardar a que sea su turno.
+ * 
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class CruceP implements Runnable{
 	public void run() {

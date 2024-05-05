@@ -4,8 +4,8 @@ package ejercicio1;
  * En esta clase se define la funcionalidad del proceso sumador, el cuál lee el array de enteros llamado
  * "arrayResultadosCompartido" para sumar todos sus valores e imprimir por pantalla el resultado.
  * 
- * @author galve
- *
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class HiloSumador implements Runnable {
 	private volatile int arrayResultadosCompartido[];

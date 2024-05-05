@@ -8,6 +8,9 @@ import messagepassing.Selector;
  * comprador estará en una caja (dependiendo del valor aleatorio se le envía
  * a la caja A o la B). Antes del constructor hemos decidido crear las variables
  * locales.
+ * 
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class HiloControlador extends Thread{
 	private MailBox buzonPregunta;

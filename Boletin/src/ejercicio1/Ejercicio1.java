@@ -5,7 +5,9 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * La clase principal del programa. En ella se declaran todas las variables necesarias para la correcta
  * ejecución del programa.
- * @author galve
+ * 
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  *
  */
 public class Ejercicio1 {

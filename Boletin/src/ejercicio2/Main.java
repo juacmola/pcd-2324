@@ -4,6 +4,9 @@ import java.util.concurrent.Semaphore;
 
 /**La clase principal del programa. Se encargará de inicializar todas
  * las variables y semáforos.
+ * 
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class Main {
 	public static int vehiculosCruzandoNS = 0;

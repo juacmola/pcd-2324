@@ -6,6 +6,9 @@ import messagepassing.MailBox;
  * encargará de enviar y recibir mensajes popr sus buzones. Establecerá
  * conversación con el controlador. Antes del constructor hemos decidido
  * crear las variables locales.
+ * 
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class HiloComprador extends Thread{
 	private MailBox buzonPregunta;

@@ -4,6 +4,9 @@ import messagepassing.MailBox;
 
 /**La clase principal del programa. Se encargará de inicializar todas
  * la variable de la pantalla (para activarla) y los buzones.
+ * 
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class Main {
 	private static int activaImpresora;

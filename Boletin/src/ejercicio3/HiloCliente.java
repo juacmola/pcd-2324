@@ -6,8 +6,8 @@ package ejercicio3;
  * Tras la selección, se dirigirá a la cola de la mesa con menor tiempo de espera para realizar la gestión
  * que desea.
  * 
- * @author galve
- *
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class HiloCliente extends Thread{
 	private int id;

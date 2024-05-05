@@ -7,8 +7,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * Esta clase representa la funcionalidad que gestiona el acceso a las 3 máquinas disponibles.
  * Cuenta con 2 métodos principales para solicitar y liberar una máquina.
  * 
- * @author galve
- *
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class MonitorMaquina {
 	private static final int N_MAQUINAS = 3;

@@ -5,8 +5,8 @@ import java.util.Random;
 /**
  * La clase principal del programa. En ella, se declaran e inicializan los monitores y los hilos clientes.
  * 
- * @author galve
- *
+ * @author Joaquín Gálvez Díaz - Effect3
+ * @author Jorge Urbelz Alonso-Cortés - juacmola
  */
 public class Main {
 	private static final int N_CLIENTES = 50;
