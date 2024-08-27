@@ -61,11 +61,11 @@ At any given time, only one of the three traffic lights can be green, with the t
 A vehicle takes half a second to cross the intersection, while a pedestrian takes 3 seconds. The roadway can accommodate 4 vehicles simultaneously in each direction, while the pedestrian crossing can accommodate 10 pedestrians. In addition, each vehicle that crosses the intersection in one direction, 7 seconds later tries to cross it in the other direction. Each pedestrian tries to cross it again every 8 seconds. To avoid accidents, only elements of the intersection can be crossing (pedestrians, vehicles in a North-South direction or vehicles in an East-West direction), so the intersection must be empty before crossing begins in a new turn (despite being green).
 Implement a program using traffic lights to coordinate the continuous passage of 50 vehicles and 100 pedestrians at the intersection in a synchronized manner. All vehicles start in a North-South direction (and will continually alternate their direction as the turns pass). Print on the screen the traffic light that is green (turn) and the tracking of who is crossing.
 
-We have implemented the following classes:
-- `CruceP.java`
-- `CruceV.java`
-- `HiloCruce.java`
-- `Main.java` (Main class)
+You can find the solution in the foulder [`ejercicio2`](./Boletin/src/ejercicio2). We have implemented the following classes:
+- [`CruceP.java`](./Boletin/src/ejercicio2/CruceP.java)
+- [`CruceV.java`](./Boletin/src/ejercicio2/CruceV.java)
+- [`HiloCruce.java`](./Boletin/src/ejercicio2/HiloCruce.java)
+- [`Main.java`](./Boletin/src/ejercicio2/Main.java) (Main class)
   
 To run the exercise, you have to run the `Main.java` class.
 
@@ -75,11 +75,11 @@ To run the exercise, you have to run the `Main.java` class.
 ## Exercise 3 - (Ejercicio 3)
 >In this exercise, we are going to represent, using a concurrent program, the activity in a bank where customers go to be served to carry out transactions. To be served, the bank has 4 desks to serve people simultaneously. Let's suppose that a customer enters the bank, has to go to a machine and choose the service they need (this action takes X milliseconds to complete). The bank has a total of 3 machines, the customer will have to sit at the first one that is free, once they select the service they need, they go to the queue with the shortest waiting time. When a customer is being served, it takes Y milliseconds at the table. Using monitors for synchronization, we will do a simulation where there will be 50 client threads with their X, Y values ​​initialized randomly.
 
-We have implemented the following classes:
-- `HiloCliente.java`
-- `MonitorMesa.java`
-- `MonitorMaquina.java`
-- `Main.java` (Main class)
+You can find the solution in the foulder [`ejercicio3`](./Boletin/src/ejercicio3). We have implemented the following classes:
+- [`HiloCliente.java`](./Boletin/src/ejercicio3/HiloCliente.java)
+- [`MonitorMesa.java`](./Boletin/src/ejercicio3/MonitorMesa.java)
+- [`MonitorMaquina.java`](./Boletin/src/ejercicio3/MonitorMaquina.java)
+- [`Main.java`](./Boletin/src/ejercicio3/Main.java) (Main class)
 
 To run the exercise, you have to run the `Main.java` class.
 
@@ -89,10 +89,10 @@ To run the exercise, you have to run the `Main.java` class.
 ## Exercise 4 - (Ejercicio 4)
 >Let's consider a set of 30 people who buy and have to pay for their purchases. To pay there are two checkouts, checkout A and B, with checkout A being faster than checkout B. Each person has to use a checkout to pay for an estimated time (random value between 1 and 10) by the checkout controller. The checkout controller, when a new person arrives to pay, estimates the payment time and those people whose estimated time is greater than or equal to 5 will be assigned the fastest checkout, i.e. A. The other people will be assigned checkout B. Each person will buy and pay 5 times, i.e. the thread repeats the following sequence of actions 5 times: 1) Makes the purchase (represented with a Thread.sleep(randomTime) call), 2) requests to be placed at a checkout, 3) Makes the payment at the checkout, 4) releases the checkout and 5) prints to the screen.
 
-We have implemented the following classes:
-- `HiloComprador.java`
-- `HiloControlador.java`
-- `Main.java` (Main class)
+You can find the solution in the foulder [`ejercicio4`](./Boletin/src/ejercicio4). We have implemented the following classes:
+- [`HiloComprador.java`](./Boletin/src/ejercicio4/HiloComprador.java)
+- [`HiloControlador.java`](./Boletin/src/ejercicio4/HiloControlador.java)
+- [`Main.java`](./Boletin/src/ejercicio4/Main.java) (Main class)
 
 To run the exercise, you have to run the `Main.java` class.
 
