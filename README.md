@@ -44,11 +44,11 @@ To run the exercises, you can follow the following steps:
 The generator process alternately introduces a number and an operation, in blocks of 6 numbers and 5 operations, in an array of 110 elements in size.
 Each consumer process has to read 11 consecutive positions of the array and calculate the final result of performing the indicated operations. For example, if in the first 5 positions a process finds the following sequence '3*5+2' the result would be '17'. Once the result of processing the 11 positions has been calculated, it will dump it into another matrix and print its ID and the result it has calculated on the screen. Once all the processes have calculated their part and dumped it into the results vector, the adder process must calculate the sum of all the results and display it on the screen. You must use ReentrantLock.
 
-You can find the solution in the foulder [`ejercicio1`](#./Boletin/src/ejercicio1) . We have implemented the following classes:
-- [`HiloGenerador.java`](#./Boletin/src/ejercicio1/HiloGenerador.java)
-- `HiloConsumidor.java`
-- `HiloSumador.java`
-- `Ejercicio1.java` (Main class)
+You can find the solution in the foulder [`ejercicio1`](./Boletin/src/ejercicio1) . We have implemented the following classes:
+- [`HiloGenerador.java`](./Boletin/src/ejercicio1/HiloGenerador.java)
+- [`HiloConsumidor.java`](./Boletin/src/ejercicio1/HiloConsumidor.java)
+- [`HiloSumador.java`](./Boletin/src/ejercicio1/HiloSumador.java)
+- [`Ejercicio1.java`](./Boletin/src/ejercicio1/Ejercicio1.java) (Main class)
 
 To run the exercise, you have to run the `Ejercicio1.java` class.
 
