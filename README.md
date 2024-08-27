@@ -32,7 +32,7 @@ The reports and the code comments are written in Spanish. If you have any questi
 In this case, we have used Eclipse IDE to develop the exercises, but you can use another IDE. We have implemented Java 8 in the exercises. 
 To run the exercises, you can follow the following steps:
 1. Download the repository. Click the 'Code' button and download the ZIP file.
-![Download ZIP|10x10](.\images\download_zip.png)
+![Download ZIP|10x10](./images/download_zip.png)
 2. Import the project into Eclipse. Go to File -> Import -> General -> Existing Projects into Workspace.
 3. Each folder represents all the classes used in each exercise. You can run the main class of each exercise to see the results. We will especifie the main class in the section of each exercise.
 
@@ -44,8 +44,8 @@ To run the exercises, you can follow the following steps:
 The generator process alternately introduces a number and an operation, in blocks of 6 numbers and 5 operations, in an array of 110 elements in size.
 Each consumer process has to read 11 consecutive positions of the array and calculate the final result of performing the indicated operations. For example, if in the first 5 positions a process finds the following sequence '3*5+2' the result would be '17'. Once the result of processing the 11 positions has been calculated, it will dump it into another matrix and print its ID and the result it has calculated on the screen. Once all the processes have calculated their part and dumped it into the results vector, the adder process must calculate the sum of all the results and display it on the screen. You must use ReentrantLock.
 
-You can find the solution in the foulder [`ejercicio1`](#.\Boletin\src\ejercicio1) . We have implemented the following classes:
-- [`HiloGenerador.java`](#.\Boletin\src\ejercicio1\HiloGenerador.java)
+You can find the solution in the foulder [`ejercicio1`](#./Boletin/src/ejercicio1) . We have implemented the following classes:
+- [`HiloGenerador.java`](#./Boletin/src/ejercicio1/HiloGenerador.java)
 - `HiloConsumidor.java`
 - `HiloSumador.java`
 - `Ejercicio1.java` (Main class)
