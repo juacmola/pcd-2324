@@ -5,18 +5,14 @@ The project is intended for educational purpose only.
 
 ---
 ## Contents
-- [Exercises of Concurrent and Distributed Programming](#exercises-of-concurrent-and-distributed-programming)
-        - [Disclaimer](#disclaimer)
-  - [Contents](#contents)
-  - [Introduction](#introduction)
-  - [How to Use the Project](#how-to-use-the-project)
-  - [Exercise 1 - (Ejercicio 1)](#exercise-1---ejercicio-1)
-  - [Exercise 2 - (Ejercicio 2)](#exercise-2---ejercicio-2)
-  - [Exercise 3 - (Ejercicio 3)](#exercise-3---ejercicio-3)
-  - [Exercise 4 - (Ejercicio 4)](#exercise-4---ejercicio-4)
-  - [Credits](#credits)
-  - [License](#license)
-          - [README.md created with ❤️ by juacmola](#readmemd-created-with-️-by-juacmola)
+- [Introduction](#introduction)
+- [How to Use the Project](#how-to-use-the-project)
+- [Exercise 1 - (Ejercicio 1)](#exercise-1---ejercicio-1)
+- [Exercise 2 - (Ejercicio 2)](#exercise-2---ejercicio-2)
+- [Exercise 3 - (Ejercicio 3)](#exercise-3---ejercicio-3)
+- [Exercise 4 - (Ejercicio 4)](#exercise-4---ejercicio-4)
+- [Credits](#credits)
+- [License](#license)
 
 ---
 ## Introduction
